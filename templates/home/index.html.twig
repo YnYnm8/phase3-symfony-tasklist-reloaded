@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}gestion de Tâches{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper {
+        margin: 1em auto;
+        max-width: 800px;
+        width: 95%;
+        font: 18px/1.5 sans-serif;
+    }
+
+    .example-wrapper code {
+        background: #F5F5F5;
+        padding: 2px 6px;
+    }
+</style>
+<div class = "flex h-screen bg-white">
+    <aside class = "w-64 shrink-0">
+        <div>
+            <i data-lucide="house"></i>
+
+            <button class="bg-black text-white">Toutes les tâches</button>
+        </div>
+
+
+    </aside>
+
+    <header class="flex flex-1 justify-between ">
+    
+        <div class="flex-col">
+            <h1 class=" text-2xl font-bold">Gestion de Tâches</h1>
+            <p>Organisez votre jornée efficacement</p>
+        </div>
+        
+        <div class="flex justify-center gap-4 ">
+            <div>
+                
+                Gérer les priorités
+            </div>
+            <button>
+                <i data-lucide="folder-plus"></i>
+                Nouveau dossier
+            </button>
+            <button>
+                <i data-lucide="plus"></i>
+                Nouvelle tâche
+            </button>
+            <button>
+                <i data-lucide="log-out"></i>
+                Déconnexion
+            </button>
+        </div>
+    
+    </header>
+
+</div>
+
+<script>
+    lucide.createIcons();
+</script>
+{% endblock %}
