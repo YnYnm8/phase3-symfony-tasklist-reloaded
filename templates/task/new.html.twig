@@ -1,11 +1,35 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Task{% endblock %}
+{% block title %}
+    New Task
+{% endblock %}
 
 {% block body %}
-    <h1>Create new Task</h1>
+    <h1>Crée une tâche</h1>
+    <p>Ajoutez une nouvelle tâche à votre list</p>
 
-    {{ include('task/_form.html.twig') }}
+    {{form_start(form)}}
+   <div>
 
-    <a href="{{ path('app_task_index') }}">back to list</a>
+    <div class="">
+        {{form_label(form.title)}}
+        {{ form_widget(form.title, {
+        attr: { class: 'w-full bg-gray-100 rounded-lg p-2' }
+        }) }}
+    </div>
+    <div class="">
+     {{form_label(form.priority)}}
+     {{form_widget(form.priority)}}
+    </div>
+    <div>
+    {{form_label(form.folder)}}
+    {{form_widget(form.folder)}}
+    </div>
+
+   </div>
+
+    {{form_end(form)}}
+
+
+    {# <a href="{{ path('app_task_index') }}">back to list</a> #}
 {% endblock %}
