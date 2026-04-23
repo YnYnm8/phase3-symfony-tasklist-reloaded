@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    New Priority
+{% endblock %}
+
+{% block body %}
+
+
+    <div class = "min-h-screen bg-gray-100 flex items-center justify-center ">
+
+        <div class="bg-white rounded-2xl shadow-lg p-8 w-lg">
+
+            {{form_start(form)}}
+
+            <div class = "flex justify-between gap-2  pt-3">
+                <h1 class = "text-2xl *:">Gerer les Priorités</h1>
+                <a href="{{path('app_home')}}"
+                    class ="h-9 w-9 text-xl bg-black text-white flex justify-center items-center mb-2">x</a>
+                </div>
+
+                {{ form_label(form.name, null, { attr: {class: 'mb-2 text-sm font-semibold'} }) }}
+               
+                <div class = "flex justify-between">
+                    {{form_widget(form.name,{
+                    attr:{class: 'w-[398px] h-10 bg-gray-300 rounded-lg p-2'}
+                    })}}
+
+                    <button class = "bg-black h-9 w-9 text-white text-xl "type = "submit">+</button>
+                </div>
+
+               
+                <p class="text-sm font-semibold  mt-2 mb-2">Priorités existantes</p>
+                
+                {% for priority in priorities %}
+                    <div class=" w-[398px] h-9 border rounded-lg px-4 py-3 mb-2 flex justify-center items-center">
+                        {{ priority.name }}
+                    </div>
+                {% endfor %}
+
+                {{form_end(form)}}
+            </div>
+        </div>
+
+
+        {# <a href="{{ path('app_priority_index') }}">back to list</a> #}
+    {% endblock %}
