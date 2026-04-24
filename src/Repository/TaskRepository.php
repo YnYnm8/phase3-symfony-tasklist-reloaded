@@ -16,6 +16,24 @@ class TaskRepository extends ServiceEntityRepository
         parent::__construct($registry, Task::class);
     }
 
+   public function findAllOrderedByStatus(): array
+{
+    return $this->createQueryBuilder('t')
+        ->addSelect('CASE 
+            WHEN t.status = \'pending\' THEN 1
+            WHEN t.status = \'completed\' THEN 2
+            WHEN t.status = \'archived\' THEN 3
+            ELSE 4
+            END AS HIDDEN statusOrder')
+//              それ以外  → 4  ← ELSE 4
+//              CASE ... END → これに'statusOrder'という名前をつける
+// HIDDEN       → Twigには表示しない（裏側だけで使う）
+        ->orderBy('statusOrder', 'ASC')
+        // ASC  → 1,2,3の順（小さい順）
+        ->getQuery()
+        ->getResult();
+}
+
 //    /**
 //     * @return Task[] Returns an array of Task objects
 //     */
