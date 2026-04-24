@@ -33,7 +33,7 @@ final class TaskController extends AbstractController
             $entityManager->persist($task);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_task_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('task/new.html.twig', [
@@ -41,6 +41,25 @@ final class TaskController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    #[Route('/{id}/status', name: 'app_task_status', methods: ['POST'])]
+public function updateStatus(Task $task, EntityManagerInterface $em): Response
+{
+    if ($task->getStatus() === Task::STATUS_PENDING) {
+        $task->setStatus(Task::STATUS_COMPLETED);
+    } elseif ($task->getStatus() === Task::STATUS_COMPLETED) {
+        $task->setStatus(Task::STATUS_ARCHIVED);
+    } else {
+        $task->setStatus(Task::STATUS_PENDING);
+    }
+
+    $em->flush();
+
+    return $this->redirectToRoute('app_home');
+}
+
+
+
 
     // #[Route('/{id}', name: 'app_task_show', methods: ['GET'])]
     // public function show(Task $task): Response
