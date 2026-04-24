@@ -26,6 +26,7 @@ final class PriorityController extends AbstractController
     #[Route('/new', name: 'app_priority_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, PriorityRepository $priorityRepository): Response
     {
+    
         $priority = new Priority();
         $form = $this->createForm(PriorityType::class, $priority);
         $form->handleRequest($request);

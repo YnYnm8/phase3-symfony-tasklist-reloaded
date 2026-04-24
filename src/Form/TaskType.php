@@ -9,7 +9,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType; 
+// use Symfony\Component\Form\Extension\Core\Type\CheckboxType; 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class TaskType extends AbstractType
@@ -19,7 +19,7 @@ class TaskType extends AbstractType
         $builder
             ->add('title',TextType::class,[
                 'label'=>'Title de la tâche',
-                'attr'=>['placeholder'=>'Faire les cours']
+                'attr'=>['placeholder'=>'Faire les course']
             ])
             // ->add('status')
             // ->add('isPinned',CheckboxType::class,[
