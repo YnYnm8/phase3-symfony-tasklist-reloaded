@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controller;
-
+use App\Entity\User;
 use App\Entity\Task;
 use App\Form\TaskType;
 // use App\Repository\TaskRepository;
@@ -30,6 +30,7 @@ final class TaskController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $task->setUser($this->getUser());
             $entityManager->persist($task);
             $entityManager->flush();
 
@@ -43,22 +44,29 @@ final class TaskController extends AbstractController
     }
 
     #[Route('/{id}/status', name: 'app_task_status', methods: ['POST'])]
-public function updateStatus(Task $task, EntityManagerInterface $em): Response
-{
-    if ($task->getStatus() === Task::STATUS_PENDING) {
-        $task->setStatus(Task::STATUS_COMPLETED);
-    } elseif ($task->getStatus() === Task::STATUS_COMPLETED) {
-        $task->setStatus(Task::STATUS_ARCHIVED);
-    } else {
-        $task->setStatus(Task::STATUS_PENDING);
+    public function updateStatus(Task $task, EntityManagerInterface $em): Response
+    {
+        if ($task->getStatus() === Task::STATUS_PENDING) {
+            $task->setStatus(Task::STATUS_COMPLETED);
+        } elseif ($task->getStatus() === Task::STATUS_COMPLETED) {
+            $task->setStatus(Task::STATUS_ARCHIVED);
+        } else {
+            $task->setStatus(Task::STATUS_PENDING);
+        }
+
+        $em->flush();
+
+        return $this->redirectToRoute('app_home');
     }
 
+ #[Route('/{id}/pin', name: 'app_task_pin', methods: ['POST'])]
+ public function togglePinned(Task $task,EntityManagerInterface $em):Response
+ {
+// trueならfalse、falseならtrueにする
+    $task->setIsPinned(!$task->isPinned());
     $em->flush();
-
     return $this->redirectToRoute('app_home');
-}
-
-
+ }
 
 
     // #[Route('/{id}', name: 'app_task_show', methods: ['GET'])]

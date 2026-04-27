@@ -33,6 +33,10 @@ class Task
     #[ORM\ManyToOne(inversedBy: 'tasks')]
     private ?Folder $folder = null;
 
+    #[ORM\ManyToOne(inversedBy: 'tasks')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -94,6 +98,18 @@ class Task
     public function setFolder(?Folder $folder): static
     {
         $this->folder = $folder;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }
