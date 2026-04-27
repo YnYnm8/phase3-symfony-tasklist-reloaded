@@ -15,12 +15,12 @@ final class HomeController extends AbstractController
     {
         $user = $this->getUser();
         return $this->render('home/index.html.twig', [
-            
-            'tasks' => $taskRepository ->findAllOrderedByStatus($user),
+
+            'tasks' => $taskRepository->findAllOrderedByStatus($user),
             //  ↑              ↑
             // Twigで使う名前   DBから取得したデータ
 
             // → DBのtaskテーブルから全件取得
-   ]);
+        ]);
     }
 }

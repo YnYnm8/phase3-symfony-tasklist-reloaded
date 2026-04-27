@@ -31,7 +31,8 @@ class TaskRepository extends ServiceEntityRepository
             // HIDDEN       → Twigには表示しない（裏側だけで使う）
             ->where('t.user = :user')       // 「userが○○のものだけ」
             ->setParameter('user', $user)   // 「○○」= ログインユーザー
-            ->orderBy('statusOrder', 'ASC')
+            ->orderBy('t.isPinned', 'DESC')  
+            ->addOrderBy('statusOrder', 'ASC')
             // ASC  → 1,2,3の順（小さい順）
             ->getQuery()
             ->getResult();

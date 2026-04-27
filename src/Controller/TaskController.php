@@ -59,7 +59,14 @@ final class TaskController extends AbstractController
         return $this->redirectToRoute('app_home');
     }
 
-
+ #[Route('/{id}/pin', name: 'app_task_pin', methods: ['POST'])]
+ public function togglePinned(Task $task,EntityManagerInterface $em):Response
+ {
+// trueならfalse、falseならtrueにする
+    $task->setIsPinned(!$task->isPinned());
+    $em->flush();
+    return $this->redirectToRoute('app_home');
+ }
 
 
     // #[Route('/{id}', name: 'app_task_show', methods: ['GET'])]
