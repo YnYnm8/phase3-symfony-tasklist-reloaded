@@ -2,9 +2,12 @@
 
 namespace App\Repository;
 
+
 use App\Entity\Folder;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+// use LDAP\Result;
+// use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @extends ServiceEntityRepository<Folder>
@@ -15,7 +18,14 @@ class FolderRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Folder::class);
     }
-
+    // public function findAll(User $user,EntityManagerInterface $em): Array
+    // {
+    //     $qb = $this->createQueryBuilder('t')
+    //         ->where('t.user =:user')
+    //         ->setParameter('user', $user);
+    //     return $qb->getQuery()
+    //         ->getResult();
+    // }
     //    /**
     //     * @return Folder[] Returns an array of Folder objects
     //     */

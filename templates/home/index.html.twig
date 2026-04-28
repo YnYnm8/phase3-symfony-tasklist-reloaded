@@ -1,130 +1,153 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-Gestion de Tâches
+    Gestion de Tâches
 {% endblock %}
 
 {% block body %}
 <div class="flex h-screen bg-[#F9FAFB]">
-	{# Sidebar #}
-	<aside class="w-64 shrink-0 border-r border-gray-300">
-		<button class="flex items-center gap-2 m-3 p-4 rounded bg-black text-white">
-			<i data-lucide="house"></i>
-			Toutes les tâches
-		</button>
-		<p class="text-base px-4">DOSSIER</p>
-	</aside>
 
-	{# Main area #}
-	<div class="flex flex-col flex-1 bg-white">
-		{# Header #}
-		<header class="flex items-center justify-between p-4 border-b">
-			<div class="flex flex-col px-6">
-				<h1 class="text-2xl font-bold">Gestion de Tâches</h1>
-				<p class="text-gray-500 text-sm">Organisez votre journée efficacement</p>
-			</div>
-			<div class="flex items-center gap-8">
-					<a href="{{ path('app_priority_new') }}"
-						class="flex items-center gap-2 border-gray-400 border rounded px-3 py-2">
-						<i data-lucide="settings"></i>
-							Gérer les priorités
-					</a>
-				
-				<div class="flex items-center gap-4">
-					<a href="" class="flex items-center gap-2 border border-gray-400 rounded px-3 py-2">
-						<i data-lucide="folder-plus"></i>
-						Nouveau dossier
-					</a>
-					<a href="{{ path('app_task_new') }}"
-						class="flex items-center gap-2 border-gray-400 border rounded px-3 py-2">
-						<i data-lucide="plus"></i>
-						Nouvelle tâche
-					</a>
-					<a href="{{ path('app_logout') }}"
-						class="flex items-center gap-2 border-gray-400 border rounded px-3 py-2">
-						<i data-lucide="log-out"></i>
-						Déconnexion
-					</a>
-				</div>
-			</div>
-		</header>
+    {# Sidebar #}
+    <aside class="w-64 shrink-0 border-r border-gray-300">
+        <button class="flex items-center gap-2 m-3 p-4 rounded bg-black text-white">
+            <i data-lucide="house"></i>
+            Toutes les tâches
+        </button>
 
-		{# Filters #}
-		<div class="flex  items-center gap-6 px-6 py-3 border-b bg-[#F9FAFB] w-full">
-			<i data-lucide="funnel"></i>
-			<form class= "flex gap-4" method="get">
-				<h2 class="flex justify-between">Filtres : </h2>
-				<select name="status" id="">
-					<option value="">Tous les statuts</option>
-					<option value="pending">En attente</option>
-					<option value="completed">Terminé</option>
-					<option value="archived">Archivé</option>
-				</select>
-				<h2 class="flex-between">Priorité</h2>
-				<select class="" name="priority" id="">
-					<option value="">Tout les priorité</option>
-					<option value="urgent">urgent</option>
-					<option value="important">important</option>
-					<option value="normal">normal</option>
-				</select>
-				<button class=" bg-black text-white hover:bg-white hover:text-black gap-7"
-					type="submit">Filtrer</button>
-			</form>
+        <p class="text-base px-4">DOSSIER</p>
+
+        {% for folder in folders %}
+		<div class = "flex items-center">
+			<i style= "color:{{ folder.color }}"  data-lucide="dot" class="w-20 h-20 flex"></i>
+
+			<p >{{ folder.name }}</p>
 		</div>
-		
+            
+           
+        {% endfor %}
+    </aside>
 
-		{# Task list #}
-		<main class="flex-1 overflow-y-auto p-6">
-			{% for task in tasks %}
-			<div class="flex items-center bg-white border rounded-lg px-4 py-3 mb-2 gap-4">
-				<form method="post" action="{{ path('app_task_status', {'id': task.id}) }}">
-					<button type="submit" class="w-5 h-5 rounded border border-gray-300
-                        {% if task.status == 'completed' or task.status == 'archived' %}
-                            bg-black
-                        {% endif %}">
-					</button>
-				</form>
+    {# Main area #}
+    <div class="flex flex-col flex-1 bg-white">
 
-				<div class="flex-1">
-					<span class="font-medium
-                        {% if task.status == 'completed' %}
-                            line-through text-gray-400
-                        {% endif %}">
-						{{ task.title }}
-					</span>
+        {# Header #}
+        <header class="flex items-center justify-between p-4 border-b">
+            <div class="flex flex-col px-6">
+                <h1 class="text-2xl font-bold">Gestion de Tâches</h1>
+                <p class="text-gray-500 text-sm">Organisez votre journée efficacement</p>
+            </div>
 
-					{% if task.priority %}
-					<span class="ml-2 text-xs px-2 py-1 rounded-full
-                        {% if task.priority.name == 'urgent' %}
-                            bg-red-100 text-red-600
-                        {% elseif task.priority.name == 'important' %}
-                            bg-orange-100 text-orange-600
-                        {% else %}
-                            bg-blue-100 text-blue-600
-                        {% endif %}">
-						{{ task.priority.name }}
-					</span>
-					{% endif %}
+            <div class="flex items-center gap-8">
+                <a href="{{ path('app_priority_new') }}" class="flex items-center gap-2 border border-gray-400 rounded px-3 py-2">
+                    <i data-lucide="settings"></i>
+                    Gérer les priorités
+                </a>
 
-					<span class="font-medium">{{ task.status }}</span>
-				</div>
+                <div class="flex items-center gap-4">
+                    <a href="{{ path('app_folder_new') }}" class="flex items-center gap-2 border border-gray-400 rounded px-3 py-2">
+                        <i data-lucide="folder-plus"></i>
+                        Nouveau dossier
+                    </a>
+                    <a href="{{ path('app_task_new') }}" class="flex items-center gap-2 border border-gray-400 rounded px-3 py-2">
+                        <i data-lucide="plus"></i>
+                        Nouvelle tâche
+                    </a>
+                    <a href="{{ path('app_logout') }}" class="flex items-center gap-2 border border-gray-400 rounded px-3 py-2">
+                        <i data-lucide="log-out"></i>
+                        Déconnexion
+                    </a>
+                </div>
+            </div>
+        </header>
 
-				<form method="post" action="{{ path('app_task_pin', {'id': task.id}) }}">
-					<button class="
-                        {% if task.isPinned %}
-                            text-yellow-500
-                        {% else %}
-                            text-gray-400
-                        {% endif %}">
-						<i data-lucide="pin"></i>
-					</button>
-				</form>
-			</div>
-			{% else %}
-			<p class="text-gray-400 text-center mt-10">Aucune tâche trouvée</p>
-			{% endfor %}
-		</main>
-	</div>
+        {# Filters #}
+        <div class="flex items-center gap-6 px-6 py-3 border-b bg-[#F9FAFB] w-full">
+            <i data-lucide="funnel"></i>
+            <form class="flex gap-4" method="get">
+                <h2>Filtres :</h2>
+
+                <select name="status">
+                    <option value="">Tous les statuts</option>
+                    <option value="pending">En attente</option>
+                    <option value="completed">Terminé</option>
+                    <option value="archived">Archivé</option>
+                </select>
+
+                <h2>Priorité</h2>
+
+                <select name="priority">
+                    <option value="">Toutes les priorités</option>
+                    <option value="urgent">Urgent</option>
+                    <option value="important">Important</option>
+                    <option value="normal">Normal</option>
+                </select>
+
+                <button type="submit" class="bg-black text-white hover:bg-white hover:text-black px-4">
+                    Filtrer
+                </button>
+            </form>
+        </div>
+
+        {# Task list #}
+        <main class="flex-1 overflow-y-auto p-6">
+            {% for task in tasks %}
+                <div class="flex items-center bg-white border rounded-lg px-4 py-3 mb-2 gap-4">
+
+                    {# Toggle status #}
+                    <form method="post" action="{{ path('app_task_status', {'id': task.id}) }}">
+                        <button
+                            type="submit"
+                            class="w-5 h-5 rounded border border-gray-300
+                                {% if task.status == 'completed' or task.status == 'archived' %}
+                                    bg-black
+                                {% endif %}"
+                        ></button>
+                    </form>
+
+                    {# Task info #}
+                    <div class="flex-1">
+                        <span class="font-medium
+                            {% if task.status == 'completed' %}
+                                line-through text-gray-400
+                            {% endif %}">
+                            {{ task.title }}
+                        </span>
+
+                        {% if task.priority %}
+                            <span class="ml-2 text-xs px-2 py-1 rounded-full
+                                {% if task.priority.name == 'urgent' %}
+                                    bg-red-100 text-red-600
+                                {% elseif task.priority.name == 'important' %}
+                                    bg-orange-100 text-orange-600
+                                {% else %}
+                                    bg-blue-100 text-blue-600
+                                {% endif %}">
+                                {{ task.priority.name }}
+                            </span>
+                        {% endif %}
+
+                        <span class="font-medium">{{ task.status }}</span>
+                    </div>
+
+                    {# Pin button #}
+                    <form method="post" action="{{ path('app_task_pin', {'id': task.id}) }}">
+                        <button class="
+                            {% if task.isPinned %}
+                                text-yellow-500
+                            {% else %}
+                                text-gray-400
+                            {% endif %}">
+                            <i data-lucide="pin"></i>
+                        </button>
+                    </form>
+
+                </div>
+            {% else %}
+                <p class="text-gray-400 text-center mt-10">Aucune tâche trouvée</p>
+            {% endfor %}
+        </main>
+
+    </div>
 </div>
 
 <script>lucide.createIcons();</script>

@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+{% block title %}New Folder
+{% endblock %}
+{% block body %}
+	<div class="h-screen bg-gray-100 flex items-center justify-center gap-3">
+		<div class="bg-white rounded-xl border border-black/10 shadow p-8 w-full max-w-md">
+			<h1>Créer un dossier</h1>
+			<p class='text-gray-300'>Organisez vos tâches par project</p>
+			{{ form_start(form) }}
+			{{ form_label(form.name) }}
+			{{ form_widget(form.name, { attr: { class: 'text-gray-500 w-full bg-gray-100 rounded-lg p-2' } }) }}
+			<label class="block font-medium mb-3">Couleur</label>
+			<div class="grid grid-cols-8 gap-2">
+				{% for key, choice in form.color %}
+					{{ form_widget(choice, { attr: { class: 'hidden' } }) }}
+					<label for="{{ choice.vars.id }}" class="w-10 h-10 rounded-full cursor-pointer block" style="background-color: {{ choice.vars.value }}"></label>
+				{% endfor %}
+			</div>
+			<div class="flex justify-end pt-3 gap-5 rounded-b-sm">
+				<a href="{{ path('app_home') }}" class="bg-white border border-gray-100 hover:bg-black hover:text-white rounded">Annuler</a>
+				<button type="submit" class="bg-white border border-gray-100 hover:bg-black hover:text-white rounded">Créer</button>
+			</div>
+			{{ form_end(form) }}
+		</div>
+	</div>
+{% endblock %}
