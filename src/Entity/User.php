@@ -50,10 +50,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'user')]
     private Collection $tasks;
 
+    /**
+     * @var Collection<int, Priority>
+     */
+    #[ORM\OneToMany(targetEntity: Priority::class, mappedBy: 'user')]
+    private Collection $priorities;
+
     public function __construct()
     {
         $this->folders = new ArrayCollection();
         $this->tasks = new ArrayCollection();
+        $this->priorities = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -198,6 +205,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($task->getUser() === $this) {
                 $task->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Priority>
+     */
+    public function getPriorities(): Collection
+    {
+        return $this->priorities;
+    }
+
+    public function addPriority(Priority $priority): static
+    {
+        if (!$this->priorities->contains($priority)) {
+            $this->priorities->add($priority);
+            $priority->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePriority(Priority $priority): static
+    {
+        if ($this->priorities->removeElement($priority)) {
+            // set the owning side to null (unless already changed)
+            if ($priority->getUser() === $this) {
+                $priority->setUser(null);
             }
         }
 

@@ -1,46 +1,47 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    New Task
+	New Task
 {% endblock %}
 
 {% block body %}
+	<div class="h-screen bg-gray-100 flex items-center justify-center gap-3">
+		<div class="bg-white rounded-xl border border-black/10 shadow p-8 w-full max-w-md">
+			<h1 class="text-base font-bold">Crée une tâche</h1>
+			<p class="text-gray-500">Ajoutez une nouvelle tâche à votre list</p>
 
-    <h1 class = "">Crée une tâche</h1>
-    <p>Ajoutez une nouvelle tâche à votre list</p>
 
+			{{form_start(form)}}
+			<div>
 
-    {{form_start(form)}}
-    <div>
-
-        <div class="">
-            {{form_label(form.title)}}
-            {{ form_widget(form.title, {
+				<div class="">
+					{{form_label(form.title)}}
+					{{ form_widget(form.title, {
             attr: { class: 'w-full bg-gray-100 rounded-lg p-2' }
             }) }}
-        </div>
-        <div class="">
-            {{form_label(form.priority)}}
-            {{form_widget(form.priority)}}
-        </div>
-        <div>
-            {{form_label(form.folder)}}
-            {{form_widget(form.folder)}}
-        </div>
-        <div>
-            <a href="{{path('app_home')}}"
-                class ="bg-white border border-gray-100 hover:bg-black hover:text-white">
-                Annuler
-            </a>
-            <button type="submit"
-                class="bg-white border border-gray-100 hover:bg-black hover:text-white">
-                Créer
-            </button>
+				</div>
+				<div class="">
+					{{form_label(form.priority)}}
+					{{form_widget(form.priority)}}
+				</div>
+				<div>
+					{{form_label(form.folder)}}
+					{{form_widget(form.folder)}}
+				</div>
+				<div class="flex-end">
+					<a href="{{path('app_home')}}" class="bg-white border border-gray-100 hover:bg-black hover:text-white rounded">
+						Annuler
+					</a>
+					<button type="submit" class="bg-white border border-gray-100 hover:bg-black hover:text-white rounded">
+						Créer
+					</button>
 
-        </div>
+				</div>
 
-        {{form_end(form)}}
+				{{form_end(form)}}
 
+			</div>
+		</div>
 
-        {# <a href="{{ path('app_task_index') }}">back to list</a> #}
-    {% endblock %}
+		{# <a href="{{ path('app_task_index') }}">back to list</a> #}
+	{% endblock %}
