@@ -26,16 +26,27 @@ final class PriorityController extends AbstractController
     #[Route('/new', name: 'app_priority_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, PriorityRepository $priorityRepository): Response
     {
-    
+
         $priority = new Priority();
         $form = $this->createForm(PriorityType::class, $priority);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $user = $this->getUser();
+            $priority->setUser($this->getUser($user));
+           
+            // ✅ importanceを既存の数に基づいて自動設定
+            $existingCount = count($priorityRepository->findBy(['user' => $this->getUser()]));
+            
+            // これを入れることでログイン中のユーザーの優先順位が表示されることになる
+
+            $priority->setImportance($existingCount + 1);
+           
+           
             $entityManager->persist($priority);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_priority_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_priority_new', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('priority/new.html.twig', [

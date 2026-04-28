@@ -17,9 +17,13 @@ class TaskRepository extends ServiceEntityRepository
         parent::__construct($registry, Task::class);
     }
 
-    public function findAllOrderedByStatus(User $user): array
+    public function findAllOrderedByStatus(User $user, ?string $status = null, ?string $priority = null): array
     {
-        return $this->createQueryBuilder('t')
+        $qb = $this->createQueryBuilder('t')
+            ->leftJoin('t.priority', 'p')
+                  //        ↑            ↑
+                //     Taskのpriority  別名を'p'にする
+                // priority_idだけじゃ名前がわからない → 結合が必要 2つのテーブルを結合するという意味です。
             ->addSelect('CASE 
             WHEN t.status = \'pending\' THEN 1
             WHEN t.status = \'completed\' THEN 2
@@ -29,11 +33,32 @@ class TaskRepository extends ServiceEntityRepository
             //              それ以外  → 4  ← ELSE 4
             //              CASE ... END → これに'statusOrder'という名前をつける
             // HIDDEN       → Twigには表示しない（裏側だけで使う）
-            ->where('t.user = :user')       // 「userが○○のものだけ」
-            ->setParameter('user', $user)   // 「○○」= ログインユーザー
-            ->orderBy('t.isPinned', 'DESC')  
+            ->where('t.user = :user')      // 「userが○○のものだけ」
+            ->setParameter('user', $user);  // 「○○」= ログインユーザー
+
+
+        // 本来であればこのように記入するがIFの中ではー＞は使えないので記入の仕方が異なる。
+        // if ($status) {
+        //     ->andWhere('t.status = :status')
+        //     ->setParameter('status', $status)
+        // }
+        // if ($priority) {
+        //     // priorityの条件も追加
+        //     ->andWhere('t.priority =:priority')
+        //     ->setparemeter('priority',$priority)
+        // }
+
+        if ($status) {
+            $qb->andWhere('t.status = :status')
+                ->setParameter('status', $status);
+        }
+        if ($priority) {
+            $qb->andWhere('p.name = :priority')
+                ->setParameter('priority', $priority);
+        }
+
+        return $qb->orderBy('t.isPinned', 'DESC')
             ->addOrderBy('statusOrder', 'ASC')
-            // ASC  → 1,2,3の順（小さい順）
             ->getQuery()
             ->getResult();
     }
